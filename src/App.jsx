@@ -6,6 +6,8 @@ import AddTutor from "./pages/AddTutor";
 // import Tutors from "./pages/Tutors";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
@@ -20,6 +22,20 @@ function App() {
         </Route>
         <Route path="*" element={<ErrorPage />} />
       </Routes>
+
+      <ToastContainer
+        position="top-right"
+        autoClose={2500}
+        hideProgressBar={true}
+        newestOnTop={true}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        toastClassName="!bg-white dark:!bg-slate-900 !text-slate-800 dark:!text-slate-100 !shadow-[0_20px_50px_rgba(8,112,184,0.12)] dark:!shadow-[0_20px_50px_rgba(0,0,0,0.5)] !border !border-slate-100 dark:!border-slate-800/80 !rounded-2xl !mt-4 !font-semibold !text-sm !px-4 !py-3"
+        style={{ zIndex: 99999 }}
+      />
     </BrowserRouter>
   );
 }
