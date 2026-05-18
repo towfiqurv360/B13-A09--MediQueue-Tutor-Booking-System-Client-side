@@ -20,7 +20,6 @@ const AddTutor = () => {
 
         const newTutor = { name, email, image, language, price, description, review };
 
-        // Real Data Posting to Backend
         fetch('http://localhost:5000/tutors', {
             method: 'POST',
             headers: {
