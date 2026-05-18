@@ -3,7 +3,7 @@ import MainLayout from "./layouts/MainLayout";
 import Home from "./pages/Home";
 import ErrorPage from "./pages/ErrorPage";
 import AddTutor from "./pages/AddTutor";
-// import Tutors from "./pages/Tutors";
+import Tutors from "./pages/Tutors";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import { ToastContainer } from 'react-toastify';
@@ -16,7 +16,7 @@ function App() {
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Home />} />
           <Route path="add-tutor" element={<AddTutor />} />
-          {/* <Route path="tutors" element={<Tutors />} /> */}
+          <Route path="tutors" element={<Tutors />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
         </Route>
