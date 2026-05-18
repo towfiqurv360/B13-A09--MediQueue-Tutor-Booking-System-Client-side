@@ -1,7 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../providers/AuthProvider';
-import { FaEye, FaEyeSlash, FaUser, FaEnvelope, FaLink, FaLock, FaCheckCircle } from 'react-icons/fa';
+import { FaEye, FaEyeSlash, FaUser, FaEnvelope, FaLink, FaLock, FaCheckCircle, FaTimes } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 
 const Register = () => {
     const { createUser, updateUserProfile, signInWithGoogle } = useContext(AuthContext);
@@ -9,6 +10,7 @@ const Register = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [error, setError] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleRegister = (e) => {
         e.preventDefault();
@@ -46,7 +48,8 @@ const Register = () => {
                 updateUserProfile(name, photo)
                     .then(() => {
                         form.reset();
-                        navigate('/');
+                        toast.success("Account created successfully!");
+                        setIsModalOpen(true);
                     })
                     .catch((err) => setError(err.message));
             })
@@ -57,6 +60,7 @@ const Register = () => {
         setError('');
         signInWithGoogle()
             .then(() => {
+                toast.success("Logged in with Google successfully!");
                 navigate('/');
             })
             .catch((err) => setError(err.message));
@@ -172,6 +176,25 @@ const Register = () => {
                     </Link>
                 </p>
             </div>
+
+            {/* Premium Dynamic Modal Container */}
+            {isModalOpen && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm transition-opacity duration-300">
+                    <div className="bg-white dark:bg-slate-900 max-w-sm w-full p-8 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-800 text-center relative scale-100 transition-transform duration-300 animate-in fade-in zoom-in-95">
+                        <button onClick={() => setIsModalOpen(false)} className="absolute top-5 right-5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer transition-colors">
+                            <FaTimes size={16} />
+                        </button>
+                        <div className="w-16 h-16 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-500 dark:text-emerald-400 rounded-2xl flex items-center justify-center mx-auto mb-5 border border-emerald-100 dark:border-emerald-900/30">
+                            <FaCheckCircle size={32} />
+                        </div>
+                        <h3 className="text-2xl font-black text-slate-800 dark:text-slate-100 mb-2">Registration Successful!</h3>
+                        <p className="text-slate-500 dark:text-slate-400 text-sm font-medium mb-6">Your account has been verified. Please proceed to login with your credentials.</p>
+                        <button onClick={() => { setIsModalOpen(false); navigate('/login'); }} className="btn btn-primary w-full bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 border-none text-white font-bold rounded-2xl cursor-pointer shadow-lg shadow-indigo-600/20">
+                            Go to Login
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
