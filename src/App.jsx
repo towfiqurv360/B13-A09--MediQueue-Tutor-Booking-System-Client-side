@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import ErrorPage from "./pages/ErrorPage";
 import AddTutor from "./pages/AddTutor";
 import Tutors from "./pages/Tutors";
+import TutorDetails from "./pages/TutorDetails";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import { ToastContainer } from 'react-toastify';
@@ -17,6 +18,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path="add-tutor" element={<AddTutor />} />
           <Route path="tutors" element={<Tutors />} />
+          <Route path="tutor/:id" element={<TutorDetails />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
         </Route>
