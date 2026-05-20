@@ -1,7 +1,7 @@
 # MediQueue - Elite Tutor Booking Architecture
 
 ## 🔗 Live Application
-**Live Site URL:** [Insert Your Live Link Here After Deployment]
+**Live Site URL:** [[https://mediqueue-tutorbooking-system.vercel.app/](https://mediqueue-tutorbooking-system.vercel.app/)]
 
 ## 📖 Project Overview
 MediQueue is a premium, fully responsive tutor booking platform engineered to bridge the gap between students and verified educators globally. Built with a modern glassmorphic UI, it eliminates scheduling conflicts and provides a seamless digital session management experience.

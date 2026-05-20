@@ -12,10 +12,15 @@ const Tutors = () => {
 
     const fetchTutors = () => {
         setLoading(true);
-        let url = `https://b13-a09-mediqueue-tutor-booking-system.onrender.com`;
+        let url = `https://b13-a09-mediqueue-tutor-booking-system.onrender.com/tutors`;
 
-        if (searchQuery) url += `search=${searchQuery}&`;
-        if (selectedDate) url += `date=${selectedDate}`;
+        const queryParams = [];
+        if (searchQuery) queryParams.push(`search=${searchQuery}`);
+        if (selectedDate) queryParams.push(`date=${selectedDate}`);
+
+        if (queryParams.length > 0) {
+            url += `?${queryParams.join('&')}`;
+        }
 
         fetch(url)
             .then(res => res.json())
