@@ -1,168 +1,160 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FiGlobe, FiStar, FiArrowRight, FiSearch, FiSliders, FiInbox } from 'react-icons/fi';
 import useTitle from '../hooks/useTitle';
+import { FiSearch, FiCalendar, FiArrowRight, FiStar, FiMail, FiPhone } from 'react-icons/fi';
 
 const Tutors = () => {
-    const [allTutors, setAllTutors] = useState([]);
-    const [filteredTutors, setFilteredTutors] = useState([]);
+    useTitle('Tutors');
+    const [tutors, setTutors] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [selectedDate, setSelectedDate] = useState('');
 
-    const [searchText, setSearchText] = useState('');
-    const [selectedLanguage, setSelectedLanguage] = useState('');
-    useTitle("Find Tutors");
+    const fetchTutors = () => {
+        setLoading(true);
+        let url = `http://localhost:5000/tutors?`;
+
+        if (searchQuery) url += `search=${searchQuery}&`;
+        if (selectedDate) url += `date=${selectedDate}`;
+
+        fetch(url)
+            .then(res => res.json())
+            .then(data => {
+                setTutors(data);
+                setLoading(false);
+            })
+            .catch(error => {
+                setLoading(false);
+            });
+    };
 
     useEffect(() => {
+        fetchTutors();
+    }, []);
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        fetchTutors();
+    };
+
+    const handleReset = () => {
+        setSearchQuery('');
+        setSelectedDate('');
+        setLoading(true);
         fetch('http://localhost:5000/tutors')
             .then(res => res.json())
             .then(data => {
-                setAllTutors(data);
-                setFilteredTutors(data);
+                setTutors(data);
                 setLoading(false);
-            })
-            .catch(error => console.error(error));
-    }, []);
-
-    useEffect(() => {
-        let result = allTutors;
-
-        if (searchText) {
-            const lowerSearch = searchText.toLowerCase();
-            result = result.filter(tutor =>
-                tutor.name.toLowerCase().includes(lowerSearch) ||
-                tutor.language.toLowerCase().includes(lowerSearch)
-            );
-        }
-
-        if (selectedLanguage) {
-            result = result.filter(tutor => tutor.language === selectedLanguage);
-        }
-
-        setFilteredTutors(result);
-    }, [searchText, selectedLanguage, allTutors]);
-
-    if (loading) {
-        return (
-            <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC] dark:bg-[#030712]">
-                <span className="loading loading-spinner loading-md text-indigo-600 dark:text-indigo-400"></span>
-            </div>
-        );
-    }
+            });
+    };
 
     return (
-        <div className="min-h-screen py-12 px-4 md:px-8 bg-[#F8FAFC] dark:bg-[#030712] transition-colors duration-500 font-sans relative overflow-hidden z-0">
+        <div className="w-full min-h-screen bg-[#F8FAFC] dark:bg-[#030712] transition-colors duration-500 font-sans relative overflow-hidden z-0">
 
-            <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden hidden dark:block">
-                <div className="absolute top-[-10%] right-[-5%] w-[40vw] h-[40vw] bg-indigo-500/10 rounded-full blur-[120px]"></div>
-                <div className="absolute bottom-[-10%] left-[-5%] w-[40vw] h-[40vw] bg-teal-500/10 rounded-full blur-[120px]"></div>
+            <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
+                <div className="absolute top-[-15%] left-[-10%] w-[60vw] h-[60vw] bg-indigo-500/10 dark:bg-indigo-500/15 rounded-full blur-[140px]"></div>
+                <div className="absolute bottom-[-15%] right-[-10%] w-[60vw] h-[60vw] bg-teal-500/10 dark:bg-teal-500/15 rounded-full blur-[140px]"></div>
             </div>
 
-            <div className="max-w-7xl mx-auto pt-6">
-
-                <div className="text-center mb-12">
-                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-light text-slate-900 dark:text-white tracking-tight mb-4">
-                        Discover your <span className="font-serif italic text-indigo-600 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-indigo-400 dark:to-teal-400 font-bold tracking-normal pr-1">Mentor</span>
+            <div className="max-w-7xl mx-auto pt-10 px-4 md:px-8 pb-20">
+                <div className="flex flex-col items-center text-center mb-12">
+                    <h2 className="text-4xl md:text-5xl font-light text-slate-900 dark:text-white tracking-tight mb-3">
+                        Elite <span className="font-serif italic text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-teal-500 dark:from-indigo-400 dark:to-teal-400 font-bold">Mentors</span>
                     </h2>
-                    <p className="text-sm text-slate-500 dark:text-slate-400 max-w-2xl mx-auto font-medium leading-relaxed">
-                        Navigate through our strictly verified global network of expert educators. Select your preferred parameters to initiate your cognitive expansion.
+                    <p className="text-slate-500 dark:text-slate-400 font-bold text-xs uppercase tracking-[0.25em]">
+                        Explore our global network of verified educators
                     </p>
                 </div>
 
-                <div className="max-w-4xl mx-auto mb-14 bg-white/60 dark:bg-white/[0.02] backdrop-blur-2xl p-3 md:p-4 rounded-[2rem] shadow-lg shadow-slate-200/40 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] border border-slate-200/80 dark:border-white/[0.08] flex flex-col md:flex-row items-center gap-3 md:gap-4 transition-all">
+                <div className="flex justify-center mb-14">
+                    <div className="w-full max-w-4xl bg-white/90 dark:bg-[#0B1120]/90 backdrop-blur-3xl border border-slate-200/80 dark:border-white/10 p-4 md:p-5 rounded-3xl shadow-xl shadow-slate-200/30 dark:shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
+                        <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-4">
+                            <div className="flex-1 relative">
+                                <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                                <input
+                                    type="text"
+                                    placeholder="Search mentor by name..."
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    className="w-full pl-12 pr-4 py-3.5 bg-slate-50 dark:bg-[#111827] border border-slate-200/80 dark:border-white/5 rounded-2xl text-sm outline-none text-slate-900 dark:text-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all font-medium"
+                                />
+                            </div>
 
-                    <div className="relative w-full md:w-2/5 flex items-center bg-slate-50 dark:bg-black/20 rounded-[1.5rem] border border-slate-200/50 dark:border-white/5 overflow-hidden">
-                        <div className="pl-4 pr-2 text-indigo-500 dark:text-indigo-400">
-                            <FiSliders size={16} />
-                        </div>
-                        <select
-                            value={selectedLanguage}
-                            onChange={(e) => setSelectedLanguage(e.target.value)}
-                            className="w-full bg-transparent border-none focus:ring-0 text-slate-700 dark:text-slate-300 text-sm font-semibold py-4 pr-4 cursor-pointer outline-none appearance-none"
-                        >
-                            <option value="" className="bg-white dark:bg-slate-900">All Languages</option>
-                            <option value="English" className="bg-white dark:bg-slate-900">English</option>
-                            <option value="Spanish" className="bg-white dark:bg-slate-900">Spanish</option>
-                            <option value="French" className="bg-white dark:bg-slate-900">French</option>
-                            <option value="German" className="bg-white dark:bg-slate-900">German</option>
-                            <option value="Japanese" className="bg-white dark:bg-slate-900">Japanese</option>
-                            <option value="Arabic" className="bg-white dark:bg-slate-900">Arabic</option>
-                        </select>
-                    </div>
+                            <div className="w-full md:w-56 relative">
+                                <FiCalendar className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                                <input
+                                    type="date"
+                                    value={selectedDate}
+                                    onChange={(e) => setSelectedDate(e.target.value)}
+                                    className="w-full pl-12 pr-4 py-3.5 bg-slate-50 dark:bg-[#111827] border border-slate-200/80 dark:border-white/5 rounded-2xl text-sm outline-none text-slate-900 dark:text-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all font-medium cursor-pointer"
+                                />
+                            </div>
 
-                    <div className="relative w-full md:w-3/5 flex items-center bg-slate-50 dark:bg-black/20 rounded-[1.5rem] border border-slate-200/50 dark:border-white/5 overflow-hidden focus-within:border-indigo-500/50 dark:focus-within:border-indigo-500/50 transition-colors">
-                        <span className="pl-4 pr-2 text-slate-400">
-                            <FiSearch size={16} />
-                        </span>
-                        <input
-                            type="text"
-                            placeholder="Search by educator name or language..."
-                            value={searchText}
-                            onChange={(e) => setSearchText(e.target.value)}
-                            className="w-full bg-transparent border-none focus:ring-0 text-slate-700 dark:text-white text-sm font-medium py-4 pr-4 outline-none placeholder:text-slate-400/70"
-                        />
+                            <div className="flex gap-3 shrink-0">
+                                <button type="button" onClick={handleReset} className="px-6 py-3.5 bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 text-slate-700 dark:text-slate-300 rounded-2xl text-sm font-bold transition-all cursor-pointer outline-none">
+                                    Reset
+                                </button>
+                                <button type="submit" className="px-8 py-3.5 bg-gradient-to-r from-slate-900 to-slate-800 hover:from-indigo-600 hover:to-indigo-700 dark:from-white dark:to-slate-200 dark:hover:from-indigo-400 dark:hover:to-indigo-500 dark:text-slate-900 dark:hover:text-white text-white rounded-2xl text-sm font-bold transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5 cursor-pointer outline-none">
+                                    Search
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
 
-                {filteredTutors.length === 0 ? (
-                    <div className="text-center py-20 bg-white/40 dark:bg-white/[0.02] backdrop-blur-xl rounded-[2.5rem] border border-slate-200/60 dark:border-white/[0.05] shadow-sm max-w-2xl mx-auto">
-                        <div className="w-16 h-16 bg-slate-100 dark:bg-white/5 text-slate-400 dark:text-slate-500 rounded-2xl flex items-center justify-center mx-auto mb-5 border border-slate-200 dark:border-white/10">
-                            <FiInbox size={24} />
-                        </div>
-                        <h3 className="text-xl font-black text-slate-900 dark:text-white mb-2">No educators found</h3>
-                        <p className="text-slate-500 dark:text-slate-400 text-xs font-medium max-w-xs mx-auto mb-6">
-                            We couldn't find any mentor matching your specific parameters. Please adjust your criteria.
-                        </p>
-                        <button
-                            onClick={() => { setSearchText(''); setSelectedLanguage(''); }}
-                            className="bg-slate-900 dark:bg-white text-white dark:text-[#030712] hover:scale-105 transition-transform duration-300 font-bold text-xs px-6 py-3 rounded-xl shadow-md outline-none cursor-pointer"
-                        >
-                            Reset Parameters
-                        </button>
+                {loading ? (
+                    <div className="flex justify-center items-center h-48">
+                        <span className="loading loading-spinner loading-lg text-indigo-600 dark:text-indigo-400"></span>
+                    </div>
+                ) : tutors.length === 0 ? (
+                    <div className="text-center py-24 text-slate-500">
+                        <p className="text-lg font-medium">No mentors found matching your criteria.</p>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                        {filteredTutors.map(tutor => (
-                            <div key={tutor._id} className="group bg-white dark:bg-white/[0.04] rounded-[1.5rem] backdrop-blur-2xl border border-slate-200/80 dark:border-white/[0.08] p-3 hover:-translate-y-1 transition-transform duration-300 flex flex-col shadow-sm hover:shadow-xl shadow-slate-200/30 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
+                        {tutors.map((tutor) => (
+                            <div key={tutor._id || tutor.id} className="group bg-white dark:bg-white/[0.03] rounded-[2rem] backdrop-blur-3xl border border-slate-200/80 dark:border-white/[0.08] p-4 hover:-translate-y-2 hover:shadow-2xl hover:shadow-indigo-500/10 dark:hover:shadow-indigo-500/5 hover:border-indigo-500/30 dark:hover:border-indigo-500/30 transition-all duration-500 flex flex-col shadow-sm cursor-pointer">
 
-                                <div className="w-full aspect-[4/3] rounded-[1.2rem] bg-slate-100 dark:bg-[#050B14] mb-4 overflow-hidden relative border border-slate-200/50 dark:border-white/5">
-                                    <img
-                                        src={tutor.image}
-                                        alt={tutor.name}
-                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
-                                    />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent opacity-80"></div>
+                                <div className="w-full h-52 rounded-[1.5rem] bg-slate-100 dark:bg-[#050B14] mb-5 overflow-hidden relative border border-slate-200/50 dark:border-white/5">
+                                    <img src={tutor.image} alt={tutor.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out" />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-900/20 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-500"></div>
 
-                                    <div className="absolute top-3 right-3 bg-white/95 dark:bg-[#030712]/80 backdrop-blur-md px-2.5 py-1 rounded-md border border-slate-200 dark:border-white/10 flex items-center gap-1.5 shadow-sm">
-                                        <div className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse"></div>
-                                        <span className="text-[9px] font-bold text-slate-800 dark:text-white uppercase tracking-widest">{tutor.language || 'Universal'}</span>
+                                    <div className="absolute top-4 left-4 bg-white/95 dark:bg-[#030712]/90 backdrop-blur-md px-3 py-1.5 rounded-xl border border-slate-200 dark:border-white/10 flex items-center gap-2 shadow-sm">
+                                        <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                                        <span className="text-[10px] font-black text-slate-800 dark:text-white uppercase tracking-widest">{tutor.language || tutor.subject || 'Universal'}</span>
                                     </div>
                                 </div>
 
-                                <div className="px-2 flex flex-col flex-grow">
-                                    <h3 className="text-lg font-black text-slate-900 dark:text-white tracking-tight mb-2 truncate group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                                        {tutor.name}
-                                    </h3>
+                                <div className="px-2 flex-grow flex flex-col">
+                                    <h3 className="text-xl font-black text-slate-900 dark:text-white tracking-tight mb-3 truncate group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{tutor.name}</h3>
 
-                                    <div className="flex items-center gap-2 mb-3">
-                                        <div className="flex items-center gap-1 text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-500/10 px-2 py-0.5 rounded-md border border-amber-100 dark:border-amber-500/20">
-                                            <FiStar size={10} className="fill-current" />
-                                            <span className="text-[11px] font-bold">{tutor.review || 0}</span>
+                                    <div className="flex flex-wrap items-center gap-3 mb-5">
+                                        <div className="flex items-center gap-1.5 text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-500/10 px-3 py-1 rounded-xl border border-amber-100 dark:border-amber-500/20">
+                                            <FiStar size={12} className="fill-current" />
+                                            <span className="text-xs font-bold">{tutor.review || tutor.rating || 0}</span>
                                         </div>
-                                        <div className="text-indigo-600 dark:text-indigo-400 font-bold text-[11px] bg-indigo-50 dark:bg-indigo-500/10 px-2 py-0.5 rounded-md border border-indigo-100 dark:border-indigo-500/20">
-                                            ${tutor.price} <span className="opacity-70 font-medium">/ session</span>
+                                        <div className="text-indigo-700 dark:text-indigo-300 font-black text-xs bg-indigo-50 dark:bg-indigo-500/10 px-3 py-1 rounded-xl border border-indigo-100 dark:border-indigo-500/20">
+                                            ${tutor.price || tutor.fee || 0} <span className="opacity-70 font-medium">/ session</span>
                                         </div>
                                     </div>
 
-                                    <p className="text-xs text-slate-600 dark:text-slate-400 line-clamp-2 mb-5 font-medium leading-relaxed flex-grow">
-                                        {tutor.description}
-                                    </p>
+                                    <div className="flex flex-wrap gap-2 mb-6 border-t border-slate-100 dark:border-white/5 pt-5">
+                                        {(tutor.tutorEmail || tutor.email) && (
+                                            <span className="flex items-center gap-1.5 text-[10px] font-bold text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-white/5 px-2.5 py-1.5 rounded-lg border border-slate-200/60 dark:border-white/5 max-w-[150px] truncate">
+                                                <FiMail size={12} className="text-slate-400" /> {tutor.tutorEmail || tutor.email}
+                                            </span>
+                                        )}
+                                        {tutor.phone && (
+                                            <span className="flex items-center gap-1.5 text-[10px] font-bold text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-white/5 px-2.5 py-1.5 rounded-lg border border-slate-200/60 dark:border-white/5">
+                                                <FiPhone size={12} className="text-slate-400" /> {tutor.phone}
+                                            </span>
+                                        )}
+                                    </div>
 
                                     <div className="mt-auto">
-                                        <Link
-                                            to={`/tutor/${tutor._id}`}
-                                            className="w-full flex items-center justify-center gap-1.5 text-slate-700 dark:text-slate-200 bg-slate-50 hover:bg-slate-900 hover:text-white dark:bg-white/[0.03] dark:hover:bg-white/10 py-2.5 rounded-xl font-bold text-xs transition-colors duration-200 border border-slate-200 dark:border-white/5 outline-none group/btn"
-                                        >
-                                            View Profile <FiArrowRight className="group-hover/btn:translate-x-0.5 transition-transform" />
+                                        <Link to={`/tutor/${tutor._id || tutor.id}`} className="w-full flex items-center justify-center gap-2 text-slate-700 dark:text-slate-200 bg-slate-50 hover:bg-indigo-600 hover:text-white dark:bg-white/[0.05] dark:hover:bg-indigo-500 py-3.5 rounded-2xl font-bold text-sm transition-all duration-300 border border-slate-200 dark:border-transparent outline-none group/btn cursor-pointer shadow-sm hover:shadow-md">
+                                            View Profile <FiArrowRight className="group-hover/btn:translate-x-1 transition-transform" />
                                         </Link>
                                     </div>
                                 </div>

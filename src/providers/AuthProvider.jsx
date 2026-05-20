@@ -11,7 +11,6 @@ import {
 import auth from '../firebase/firebase.config';
 
 export const AuthContext = createContext(null);
-
 const googleProvider = new GoogleAuthProvider();
 
 const AuthProvider = ({ children }) => {
@@ -22,7 +21,6 @@ const AuthProvider = ({ children }) => {
         setLoading(true);
         return createUserWithEmailAndPassword(auth, email, password);
     };
-
 
     const signInUser = (email, password) => {
         setLoading(true);
@@ -49,7 +47,25 @@ const AuthProvider = ({ children }) => {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             setUser(currentUser);
-            setLoading(false);
+
+            if (currentUser) {
+                const loggedUser = { email: currentUser.email };
+                fetch('http://localhost:5000/jwt', {
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify(loggedUser)
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        localStorage.setItem('access-token', data.token);
+                        setLoading(false);
+                    });
+            } else {
+                localStorage.removeItem('access-token');
+                setLoading(false);
+            }
         });
 
         return () => {

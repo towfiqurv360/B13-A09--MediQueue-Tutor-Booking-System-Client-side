@@ -10,14 +10,21 @@ const Sessions = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch(`http://localhost:5000/booked-sessions?email=${user?.email}`)
+        fetch(`http://localhost:5000/booked-sessions?email=${user?.email}`, {
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('access-token')}`
+            }
+        })
             .then(res => res.json())
             .then(data => {
-                setBookedSessions(data);
+                if (!data.error) {
+                    setBookedSessions(data);
+                } else {
+                    setBookedSessions([]);
+                }
                 setLoading(false);
             })
             .catch(error => {
-                console.error(error);
                 setLoading(false);
             });
     }, [user?.email]);

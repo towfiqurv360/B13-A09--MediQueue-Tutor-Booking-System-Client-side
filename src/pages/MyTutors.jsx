@@ -15,14 +15,21 @@ const MyTutors = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
-        fetch(`http://localhost:5000/my-tutors?email=${user?.email}`)
+        fetch(`http://localhost:5000/my-tutors?email=${user?.email}`, {
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('access-token')}`
+            }
+        })
             .then(res => res.json())
             .then(data => {
-                setTutors(data);
+                if (!data.error) {
+                    setTutors(data);
+                } else {
+                    setTutors([]);
+                }
                 setLoading(false);
             })
             .catch(err => {
-                console.error(err);
                 setLoading(false);
             });
     }, [user?.email]);
@@ -41,7 +48,10 @@ const MyTutors = () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 fetch(`http://localhost:5000/tutors/${id}`, {
-                    method: 'DELETE'
+                    method: 'DELETE',
+                    headers: {
+                        authorization: `Bearer ${localStorage.getItem('access-token')}`
+                    }
                 })
                     .then(res => res.json())
                     .then(data => {
@@ -71,14 +81,16 @@ const MyTutors = () => {
         const form = e.target;
         const price = form.price.value;
         const phone = form.phone.value;
+        const image = form.image.value;
         const description = form.description.value;
 
-        const updatedData = { price, phone, description };
+        const updatedData = { price, phone, image, description };
 
         fetch(`http://localhost:5000/tutors/${selectedTutor._id}`, {
             method: 'PATCH',
             headers: {
-                'content-type': 'application/json'
+                'content-type': 'application/json',
+                authorization: `Bearer ${localStorage.getItem('access-token')}`
             },
             body: JSON.stringify(updatedData)
         })
@@ -167,14 +179,12 @@ const MyTutors = () => {
                                                     <button
                                                         onClick={() => handleEditClick(tutor)}
                                                         className="p-2 text-slate-400 hover:text-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-500/10 rounded-lg transition-colors outline-none"
-                                                        title="Update Tutor"
                                                     >
                                                         <FiEdit size={16} />
                                                     </button>
                                                     <button
                                                         onClick={() => handleDelete(tutor._id)}
                                                         className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition-colors outline-none"
-                                                        title="Delete Tutor"
                                                     >
                                                         <FiTrash2 size={16} />
                                                     </button>
@@ -208,7 +218,11 @@ const MyTutors = () => {
                             </div>
                             <div>
                                 <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">Phone Number</label>
-                                <input type="text" name="phone" defaultValue={selectedTutor.phone} className="w-full bg-slate-50 dark:bg-[#111827] border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 transition-colors" />
+                                <input type="text" name="phone" defaultValue={selectedTutor.phone} className="w-full bg-slate-50 dark:bg-[#111827] border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 transition-colors" required />
+                            </div>
+                            <div>
+                                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">Image URL</label>
+                                <input type="url" name="image" defaultValue={selectedTutor.image} className="w-full bg-slate-50 dark:bg-[#111827] border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 transition-colors" required />
                             </div>
                             <div>
                                 <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">Description</label>
