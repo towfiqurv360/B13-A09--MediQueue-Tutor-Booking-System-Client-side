@@ -12,7 +12,7 @@ const Tutors = () => {
 
     const fetchTutors = () => {
         setLoading(true);
-        let url = `http://localhost:5000/tutors?`;
+        let url = `https://b13-a09-mediqueue-tutor-booking-system.onrender.com`;
 
         if (searchQuery) url += `search=${searchQuery}&`;
         if (selectedDate) url += `date=${selectedDate}`;
@@ -41,7 +41,7 @@ const Tutors = () => {
         setSearchQuery('');
         setSelectedDate('');
         setLoading(true);
-        fetch('http://localhost:5000/tutors')
+        fetch('https://b13-a09-mediqueue-tutor-booking-system.onrender.com/tutors')
             .then(res => res.json())
             .then(data => {
                 setTutors(data);

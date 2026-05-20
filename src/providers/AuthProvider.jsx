@@ -50,7 +50,7 @@ const AuthProvider = ({ children }) => {
 
             if (currentUser) {
                 const loggedUser = { email: currentUser.email };
-                fetch('http://localhost:5000/jwt', {
+                fetch('https://b13-a09-mediqueue-tutor-booking-system.onrender.com/jwt', {
                     method: 'POST',
                     headers: {
                         'content-type': 'application/json'

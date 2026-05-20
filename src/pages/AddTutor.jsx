@@ -37,7 +37,7 @@ const AddTutor = () => {
             review: 0,
         };
 
-        fetch('http://localhost:5000/tutors', {
+        fetch('https://b13-a09-mediqueue-tutor-booking-system.onrender.com/tutors', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json',

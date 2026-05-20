@@ -17,7 +17,7 @@ const Home = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch('http://localhost:5000/tutors')
+        fetch('https://b13-a09-mediqueue-tutor-booking-system.onrender.com/tutors')
             .then(res => res.json())
             .then(data => {
                 setTutors(data);

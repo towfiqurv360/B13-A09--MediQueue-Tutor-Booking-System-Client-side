@@ -12,7 +12,7 @@ const Sessions = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch(`http://localhost:5000/booked-sessions?email=${user?.email}`, {
+        fetch(`https://b13-a09-mediqueue-tutor-booking-system.onrender.com/booked-sessions?email=${user?.email}`, {
             headers: {
                 authorization: `Bearer ${localStorage.getItem('access-token')}`
             }
@@ -44,7 +44,7 @@ const Sessions = () => {
             color: document.documentElement.classList.contains('dark') ? '#ffffff' : '#000000',
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch(`http://localhost:5000/booked-sessions/${id}`, {
+                fetch(`https://b13-a09-mediqueue-tutor-booking-system.onrender.com/booked-sessions/${id}`, {
                     method: 'DELETE',
                     headers: {
                         authorization: `Bearer ${localStorage.getItem('access-token')}`

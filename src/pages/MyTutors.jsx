@@ -15,7 +15,7 @@ const MyTutors = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
-        fetch(`http://localhost:5000/my-tutors?email=${user?.email}`, {
+        fetch(`https://b13-a09-mediqueue-tutor-booking-system.onrender.com/my-tutors?email=${user?.email}`, {
             headers: {
                 authorization: `Bearer ${localStorage.getItem('access-token')}`
             }
@@ -47,7 +47,7 @@ const MyTutors = () => {
             color: document.documentElement.classList.contains('dark') ? '#ffffff' : '#000000',
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch(`http://localhost:5000/tutors/${id}`, {
+                fetch(`https://b13-a09-mediqueue-tutor-booking-system.onrender.com/tutors/${id}`, {
                     method: 'DELETE',
                     headers: {
                         authorization: `Bearer ${localStorage.getItem('access-token')}`
@@ -86,7 +86,7 @@ const MyTutors = () => {
 
         const updatedData = { price, phone, image, description };
 
-        fetch(`http://localhost:5000/tutors/${selectedTutor._id}`, {
+        fetch(`https://b13-a09-mediqueue-tutor-booking-system.onrender.com/tutors/${selectedTutor._id}`, {
             method: 'PATCH',
             headers: {
                 'content-type': 'application/json',

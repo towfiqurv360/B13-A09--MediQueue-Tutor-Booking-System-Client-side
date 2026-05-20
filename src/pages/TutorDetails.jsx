@@ -17,7 +17,7 @@ const TutorDetails = () => {
     const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
 
     useEffect(() => {
-        fetch(`http://localhost:5000/tutors/${id}`)
+        fetch(`https://b13-a09-mediqueue-tutor-booking-system.onrender.com/tutors/${id}`)
             .then(res => res.json())
             .then(data => {
                 setTutor(data);
@@ -43,7 +43,7 @@ const TutorDetails = () => {
             userEmail: user.email
         };
 
-        fetch('http://localhost:5000/booked-sessions', {
+        fetch('https://b13-a09-mediqueue-tutor-booking-system.onrender.com/booked-sessions', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json',
