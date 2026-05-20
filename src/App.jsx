@@ -5,8 +5,11 @@ import ErrorPage from "./pages/ErrorPage";
 import AddTutor from "./pages/AddTutor";
 import Tutors from "./pages/Tutors";
 import TutorDetails from "./pages/TutorDetails";
+import MyTutors from "./pages/MyTutors";
+import Sessions from "./pages/Sessions";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import PrivateRoute from "./routes/PrivateRoute";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -16,12 +19,28 @@ function App() {
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Home />} />
-          <Route path="add-tutor" element={<AddTutor />} />
           <Route path="tutors" element={<Tutors />} />
-          <Route path="tutor/:id" element={<TutorDetails />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
+
+          <Route
+            path="tutor/:id"
+            element={<PrivateRoute><TutorDetails /></PrivateRoute>}
+          />
+          <Route
+            path="add-tutor"
+            element={<PrivateRoute><AddTutor /></PrivateRoute>}
+          />
+          <Route
+            path="my-tutors"
+            element={<PrivateRoute><MyTutors /></PrivateRoute>}
+          />
+          <Route
+            path="sessions"
+            element={<PrivateRoute><Sessions /></PrivateRoute>}
+          />
         </Route>
+
         <Route path="*" element={<ErrorPage />} />
       </Routes>
 

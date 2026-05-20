@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FiGlobe, FiStar, FiArrowRight, FiSearch, FiSliders, FiInbox } from 'react-icons/fi';
+import useTitle from '../hooks/useTitle';
 
 const Tutors = () => {
     const [allTutors, setAllTutors] = useState([]);
@@ -9,6 +10,7 @@ const Tutors = () => {
 
     const [searchText, setSearchText] = useState('');
     const [selectedLanguage, setSelectedLanguage] = useState('');
+    useTitle("Find Tutors");
 
     useEffect(() => {
         fetch('http://localhost:5000/tutors')

@@ -3,11 +3,14 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../providers/AuthProvider';
 import { FaEye, FaEyeSlash, FaEnvelope, FaLock } from 'react-icons/fa';
 import { toast } from 'react-toastify';
+import useTitle from '../hooks/useTitle';
 
 const Login = () => {
     const { signInUser, signInWithGoogle } = useContext(AuthContext);
     const navigate = useNavigate();
     const location = useLocation();
+
+    useTitle("Login");
 
     const registeredEmail = location.state?.email || '';
     const registeredPassword = location.state?.password || '';

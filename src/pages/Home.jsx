@@ -9,7 +9,10 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/effect-fade';
 
+import useTitle from '../hooks/useTitle';
+
 const Home = () => {
+    useTitle('Home');
     const [tutors, setTutors] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -116,6 +119,76 @@ const Home = () => {
                                 </div>
                             </div>
                         </SwiperSlide>
+
+                        <SwiperSlide className="w-full h-full">
+                            <div className="grid grid-cols-1 lg:grid-cols-12 items-center gap-8 h-full w-full px-6 md:px-16 relative">
+                                <div className="lg:col-span-7 flex flex-col items-start text-left relative z-20">
+                                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-100/50 dark:bg-white/5 border border-purple-200/50 dark:border-white/10 text-purple-700 dark:text-purple-400 text-[10px] font-bold uppercase tracking-wider mb-4">
+                                        <FiCpu size={12} /> Advanced Engineering
+                                    </div>
+                                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-light text-slate-900 dark:text-white mb-4 tracking-tight leading-tight max-w-2xl">
+                                        Optimize your <span className="font-serif italic text-purple-500 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-purple-400 dark:to-pink-500 font-bold tracking-normal pr-1">pipeline</span>
+                                    </h2>
+                                    <p className="text-xs md:text-sm text-slate-600 dark:text-slate-400 mb-6 max-w-xl font-medium leading-relaxed">
+                                        Construct comprehensive system designs and optimize code scalability with mentors specializing in modern frontend frameworks.
+                                    </p>
+                                    <Link to="/tutors" className="group flex items-center gap-2 bg-slate-900 hover:bg-purple-600 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 text-white rounded-xl font-bold text-xs px-5 py-3 transition-all duration-300 shadow-sm outline-none">
+                                        Explore Frameworks <FiArrowRight className="group-hover:translate-x-1 transition-transform" />
+                                    </Link>
+                                </div>
+                                <div className="lg:col-span-5 hidden lg:grid grid-cols-2 gap-4 relative z-20 pr-4">
+                                    <div className="p-5 rounded-2xl bg-white/80 dark:bg-white/[0.03] border border-slate-200 dark:border-white/10 shadow-sm flex flex-col justify-between h-36">
+                                        <FiCheckCircle className="text-emerald-500" size={24} />
+                                        <div>
+                                            <p className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">10K+</p>
+                                            <p className="text-[11px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wide mt-1">Sessions Validated</p>
+                                        </div>
+                                    </div>
+                                    <div className="p-5 rounded-2xl bg-white/80 dark:bg-white/[0.03] border border-slate-200 dark:border-white/10 shadow-sm flex flex-col justify-between h-36 mt-6">
+                                        <FiClock className="text-indigo-500" size={24} />
+                                        <div>
+                                            <p className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">Zero</p>
+                                            <p className="text-[11px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wide mt-1">Routing Overhead</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </SwiperSlide>
+
+                        <SwiperSlide className="w-full h-full">
+                            <div className="grid grid-cols-1 lg:grid-cols-12 items-center gap-8 h-full w-full px-6 md:px-16 relative">
+                                <div className="lg:col-span-7 flex flex-col items-start text-left relative z-20">
+                                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100/50 dark:bg-white/5 border border-amber-200/50 dark:border-white/10 text-amber-700 dark:text-amber-400 text-[10px] font-bold uppercase tracking-wider mb-4">
+                                        <FiAward size={12} /> Strategic Frameworks
+                                    </div>
+                                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-light text-slate-900 dark:text-white mb-4 tracking-tight leading-tight max-w-2xl">
+                                        Secure your <span className="font-serif italic text-amber-500 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-amber-400 dark:to-orange-500 font-bold tracking-normal pr-1">future</span>
+                                    </h2>
+                                    <p className="text-xs md:text-sm text-slate-600 dark:text-slate-400 mb-6 max-w-xl font-medium leading-relaxed">
+                                        Gain elite architectural oversight. Build production-grade security applications, firewall setups, and custom data workflows safely.
+                                    </p>
+                                    <Link to="/tutors" className="group flex items-center gap-2 bg-slate-900 hover:bg-amber-600 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 text-white rounded-xl font-bold text-xs px-5 py-3 transition-all duration-300 shadow-sm outline-none">
+                                        Initialize Protocol <FiArrowRight className="group-hover:translate-x-1 transition-transform" />
+                                    </Link>
+                                </div>
+                                <div className="lg:col-span-5 hidden lg:grid grid-cols-2 gap-4 relative z-20 pr-4">
+                                    <div className="p-5 rounded-2xl bg-white/80 dark:bg-white/[0.03] border border-slate-200 dark:border-white/10 shadow-sm flex flex-col justify-between h-36">
+                                        <FiShield className="text-blue-500" size={24} />
+                                        <div>
+                                            <p className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">100%</p>
+                                            <p className="text-[11px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wide mt-1">Secure Routing</p>
+                                        </div>
+                                    </div>
+                                    <div className="p-5 rounded-2xl bg-white/80 dark:bg-white/[0.03] border border-slate-200 dark:border-white/10 shadow-sm flex flex-col justify-between h-36 mt-6">
+                                        <FiGlobe className="text-teal-500" size={24} />
+                                        <div>
+                                            <p className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">120+</p>
+                                            <p className="text-[11px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wide mt-1">Countries Synced</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </SwiperSlide>
                     </Swiper>
                 </div>
             </section>
@@ -137,7 +210,7 @@ const Home = () => {
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                         {tutors.slice(0, 6).map((tutor) => (
-                            <div key={tutor._id || tutor.id} className="group bg-white dark:bg-white/[0.04] rounded-[1.5rem] backdrop-blur-2xl border border-slate-200 dark:border-white/[0.08] p-4 hover:-translate-y-1.5 transition-all duration-500 flex flex-col shadow-lg shadow-slate-200/20 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
+                            <div key={tutor._id || tutor.id} className="group bg-white dark:bg-white/[0.04] rounded-[1.5rem] backdrop-blur-2xl border border-slate-200/60 dark:border-white/[0.08] p-4 hover:-translate-y-1.5 transition-all duration-500 flex flex-col shadow-lg shadow-slate-200/20 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
 
                                 <div className="w-full aspect-[4/3] rounded-[1rem] bg-slate-100 dark:bg-[#050B14] mb-4 overflow-hidden relative border border-slate-200/50 dark:border-white/5">
                                     <img src={tutor.image} alt={tutor.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />

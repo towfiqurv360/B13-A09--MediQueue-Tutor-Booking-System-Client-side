@@ -1,17 +1,20 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../providers/AuthProvider';
-import { FiGlobe, FiStar, FiDollarSign, FiArrowLeft, FiCheckCircle, FiMail, FiPhone, FiLinkedin } from 'react-icons/fi';
+import { FiGlobe, FiStar, FiArrowLeft, FiCheckCircle, FiMail, FiPhone, FiLinkedin, FiCheck } from 'react-icons/fi';
 import { FaFacebookF } from 'react-icons/fa';
 import { toast } from 'react-toastify';
+import useTitle from '../hooks/useTitle';
 
 const TutorDetails = () => {
+    useTitle('Tutor Details');
     const { id } = useParams();
     const { user } = useContext(AuthContext);
     const navigate = useNavigate();
 
     const [tutor, setTutor] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
 
     useEffect(() => {
         fetch(`http://localhost:5000/tutors/${id}`)
@@ -40,19 +43,19 @@ const TutorDetails = () => {
             userEmail: user.email
         };
 
-        fetch('http://localhost:5000/book-session', {
+        fetch('http://localhost:5000/booked-sessions', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'content-type': 'application/json'
             },
             body: JSON.stringify(sessionData)
         })
             .then(res => res.json())
             .then(data => {
                 if (data.insertedId) {
-                    toast.success("Session booked successfully! 🎉");
-                } else if (data.message === "Already booked") {
-                    toast.warning("Already Exist! You have already booked this session.");
+                    setIsBookingModalOpen(true);
+                } else if (data.message) {
+                    toast.error(data.message);
                 } else {
                     toast.error("Failed to book session!");
                 }
@@ -93,7 +96,7 @@ const TutorDetails = () => {
                 <div className="bg-white dark:bg-white/[0.04] backdrop-blur-2xl rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.02)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] border border-slate-200/80 dark:border-white/[0.08] grid grid-cols-1 md:grid-cols-12 gap-8 p-5 md:p-8 transition-all duration-300">
 
                     <div className="col-span-1 md:col-span-5 w-full aspect-square relative rounded-[1.8rem] overflow-hidden bg-slate-100 dark:bg-[#050B14] border border-slate-200/60 dark:border-white/5">
-                        <img src={tutor.image} alt={tutor.name} className="w-full h-full object-cover object-center group-hover:scale-102 transition-transform duration-500" />
+                        <img src={tutor.image} alt={tutor.name} className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" />
                         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent opacity-60"></div>
                         <div className="absolute bottom-4 left-4 bg-white/95 dark:bg-[#030712]/80 backdrop-blur-md px-3 py-1 rounded-xl border border-slate-200 dark:border-white/10 flex items-center gap-1.5 shadow-sm">
                             <FiGlobe className="text-indigo-600 dark:text-indigo-400" size={12} />
@@ -133,13 +136,13 @@ const TutorDetails = () => {
                                 </span>
                             )}
                             {tutor.linkedin && (
-                                <a href={tutor.linkedin} target="_blank" rel="noreferrer" className="flex items-center justify-center w-6 h-6 text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-white/5 rounded-xl border border-blue-100 dark:border-white/5 hover:bg-blue-100 dark:hover:bg-white/10 transition-colors">
-                                    <FiLinkedin size={13} />
+                                <a href={tutor.linkedin.startsWith('http') ? tutor.linkedin : `https://${tutor.linkedin}`} target="_blank" rel="noreferrer" className="flex items-center justify-center w-8 h-8 text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-white/5 rounded-xl border border-blue-100 dark:border-white/5 hover:bg-blue-100 dark:hover:bg-white/10 transition-colors">
+                                    <FiLinkedin size={14} />
                                 </a>
                             )}
                             {tutor.facebook && (
-                                <a href={tutor.facebook} target="_blank" rel="noreferrer" className="flex items-center justify-center w-6 h-6 text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-white/5 rounded-xl border border-indigo-100 dark:border-white/5 hover:bg-indigo-100 dark:hover:bg-white/10 transition-colors">
-                                    <FaFacebookF size={11} />
+                                <a href={tutor.facebook.startsWith('http') ? tutor.facebook : `https://${tutor.facebook}`} target="_blank" rel="noreferrer" className="flex items-center justify-center w-8 h-8 text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-white/5 rounded-xl border border-indigo-100 dark:border-white/5 hover:bg-indigo-100 dark:hover:bg-white/10 transition-colors">
+                                    <FaFacebookF size={12} />
                                 </a>
                             )}
                         </div>
@@ -154,7 +157,7 @@ const TutorDetails = () => {
                         <div className="mt-auto pt-4 border-t border-slate-100 dark:border-white/5">
                             <button
                                 onClick={handleBookSession}
-                                className="w-full sm:w-auto bg-slate-900 hover:bg-indigo-600 dark:bg-white dark:text-slate-900 dark:hover:bg-white/90 text-white rounded-xl font-bold text-xs px-6 py-3 transition-all duration-300 hover:scale-[1.02] shadow-sm outline-none cursor-pointer"
+                                className="w-full sm:w-auto bg-slate-900 hover:bg-indigo-600 dark:bg-white dark:text-slate-900 dark:hover:bg-white/90 text-white rounded-xl font-bold text-xs px-8 py-3.5 transition-all duration-300 hover:scale-[1.02] shadow-sm outline-none cursor-pointer"
                             >
                                 Book a Session
                             </button>
@@ -162,6 +165,36 @@ const TutorDetails = () => {
                     </div>
                 </div>
             </div>
+
+            {isBookingModalOpen && (
+                <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-900/40 dark:bg-[#030712]/80 backdrop-blur-sm transition-opacity duration-300">
+                    <div className="bg-white dark:bg-[#0B1120] max-w-sm w-full p-8 rounded-[2rem] shadow-2xl border border-slate-200 dark:border-white/10 relative text-center">
+                        <div className="w-16 h-16 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-5 border border-emerald-100 dark:border-emerald-500/20">
+                            <FiCheck size={32} />
+                        </div>
+
+                        <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-2">Booking Confirmed!</h3>
+                        <p className="text-sm text-slate-500 dark:text-slate-400 font-medium mb-8">
+                            Your session with <strong className="text-slate-700 dark:text-slate-200">{tutor.name}</strong> has been successfully registered.
+                        </p>
+
+                        <div className="flex flex-col gap-3">
+                            <button
+                                onClick={() => navigate('/sessions')}
+                                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 rounded-xl text-sm transition-colors outline-none cursor-pointer"
+                            >
+                                View Session
+                            </button>
+                            <button
+                                onClick={() => setIsBookingModalOpen(false)}
+                                className="w-full bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 text-slate-700 dark:text-slate-300 font-bold py-3.5 rounded-xl text-sm transition-colors outline-none cursor-pointer"
+                            >
+                                Keep Browsing
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

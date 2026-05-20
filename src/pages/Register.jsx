@@ -3,8 +3,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../providers/AuthProvider';
 import { FaEye, FaEyeSlash, FaUser, FaEnvelope, FaLink, FaLock, FaCheckCircle, FaTimes } from 'react-icons/fa';
 import { toast } from 'react-toastify';
+import useTitle from '../hooks/useTitle';
 
 const Register = () => {
+    useTitle("Register");
     const { createUser, updateUserProfile, signInWithGoogle } = useContext(AuthContext);
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
@@ -177,7 +179,6 @@ const Register = () => {
                 </p>
             </div>
 
-            {/* Premium Dynamic Modal Container */}
             {isModalOpen && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm transition-opacity duration-300">
                     <div className="bg-white dark:bg-slate-900 max-w-sm w-full p-8 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-800 text-center relative scale-100 transition-transform duration-300 animate-in fade-in zoom-in-95">
